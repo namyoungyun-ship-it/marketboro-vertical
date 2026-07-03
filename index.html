@@ -1,4 +1,9 @@
-<title>Pangyo Sales Dashboard</title>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>판교 거래액 대시보드</title>
 <style>
   :root {
     --bg: #F7F5F2;
@@ -26,8 +31,8 @@
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
-                 "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Pretendard", "Apple SD Gothic Neo", -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", "Malgun Gothic", sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
@@ -53,7 +58,7 @@
     width: 44px; height: 44px; border-radius: 12px;
     background: linear-gradient(145deg, var(--amber), var(--amber-deep));
     display: grid; place-items: center;
-    color: #fff; font-size: 20px; font-weight: 700;
+    color: #fff; font-size: 22px; font-weight: 700;
     box-shadow: 0 4px 12px rgba(201,99,28,.28);
   }
   .brand h1 {
@@ -99,7 +104,7 @@
     font-size: 26px; font-weight: 700; letter-spacing: -.02em;
     font-variant-numeric: tabular-nums;
   }
-  .card .value .unit { font-size: 15px; font-weight: 600; color: var(--ink-soft); margin-left: 3px; }
+  .card .value .unit { font-size: 15px; font-weight: 600; color: var(--ink-soft); margin-left: 2px; }
   .card .delta {
     margin-top: 6px; font-size: 12.5px; font-weight: 600;
     display: inline-flex; align-items: center; gap: 4px;
@@ -210,19 +215,21 @@
     * { transition: none !important; }
   }
 </style>
+</head>
+<body>
 
 <div class="wrap">
   <header>
     <div class="brand">
-      <div class="mark">P</div>
+      <div class="mark">밥</div>
       <div>
-        <h1>Pangyo Hearty Meal &middot; Owner Dashboard</h1>
-        <p class="sub">Pangyo-ro, Bundang-gu, Seongnam &middot; Korean &middot; Home-style</p>
+        <h1>판교 든든한끼 &middot; 사장님 대시보드</h1>
+        <p class="sub">경기 성남시 분당구 판교역로 &middot; 한식 · 백반</p>
       </div>
     </div>
     <div class="meta">
-      <div class="date" id="today-label">July 2, 2026 (Thu)</div>
-      <div class="live"><span class="dot"></span> Live &middot; Closes 22:00</div>
+      <div class="date" id="today-label">2026년 7월 2일 (목)</div>
+      <div class="live"><span class="dot"></span> 실시간 집계 · 22:00 마감</div>
     </div>
   </header>
 
@@ -231,45 +238,45 @@
   <section class="panel">
     <div class="panel-head">
       <div>
-        <h2>Sales by Hour</h2>
-        <div class="hint">Hover over a bar to see the exact amount and order count.</div>
+        <h2>시간대별 거래액</h2>
+        <div class="hint">막대에 마우스를 올리면 상세 금액과 건수를 볼 수 있어요.</div>
       </div>
-      <div class="toggle" role="group" aria-label="Select period">
-        <button id="btn-today" aria-pressed="true">Today</button>
-        <button id="btn-week" aria-pressed="false">Weekday avg</button>
+      <div class="toggle" role="group" aria-label="기간 선택">
+        <button id="btn-today" aria-pressed="true">오늘</button>
+        <button id="btn-week" aria-pressed="false">주중 평균</button>
       </div>
     </div>
     <div class="chart-area">
-      <svg id="chart" viewBox="0 0 960 340" role="img" aria-label="Sales by hour bar chart"></svg>
+      <svg id="chart" viewBox="0 0 960 340" role="img" aria-label="시간대별 거래액 막대 그래프"></svg>
       <div class="tooltip" id="tooltip"></div>
     </div>
     <div class="legend">
-      <span class="k"><span class="swatch" style="background:var(--amber)"></span> Sales</span>
-      <span class="k"><span class="swatch" style="background:var(--amber-deep)"></span> Peak hour</span>
+      <span class="k"><span class="swatch" style="background:var(--amber)"></span> 거래액</span>
+      <span class="k"><span class="swatch" style="background:var(--amber-deep)"></span> 피크 시간대</span>
     </div>
   </section>
 
   <div class="two-up">
     <section class="panel">
-      <div class="panel-head"><h2>Sales by Day of Week</h2><span class="hint">Last 7 days</span></div>
+      <div class="panel-head"><h2>요일별 거래액</h2><span class="hint">최근 1주</span></div>
       <div class="chart-area">
-        <svg id="chart-dow" viewBox="0 0 460 240" role="img" aria-label="Sales by day of week"></svg>
+        <svg id="chart-dow" viewBox="0 0 460 240" role="img" aria-label="요일별 거래액"></svg>
       </div>
     </section>
     <section class="panel">
-      <div class="panel-head"><h2>Orders by Hour</h2><span class="hint">Today</span></div>
+      <div class="panel-head"><h2>시간대별 거래 건수</h2><span class="hint">오늘</span></div>
       <div class="chart-area">
-        <svg id="chart-cnt" viewBox="0 0 460 240" role="img" aria-label="Orders by hour"></svg>
+        <svg id="chart-cnt" viewBox="0 0 460 240" role="img" aria-label="시간대별 거래 건수"></svg>
       </div>
     </section>
   </div>
 
   <section class="panel">
-    <div class="panel-head"><h2>Hourly Breakdown</h2><span class="hint" id="table-hint">Today</span></div>
+    <div class="panel-head"><h2>시간대 상세</h2><span class="hint" id="table-hint">오늘 기준</span></div>
     <div class="table-scroll">
       <table>
         <thead>
-          <tr><th>Hour</th><th>Sales</th><th>Orders</th><th>Avg / order</th><th>Share</th><th></th></tr>
+          <tr><th>시간대</th><th>거래액</th><th>건수</th><th>객단가</th><th>비중</th><th></th></tr>
         </thead>
         <tbody id="table-body"></tbody>
       </table>
@@ -277,37 +284,36 @@
   </section>
 
   <footer>
-    * Figures shown are sample demo data. When connected to live POS / settlement data, the same screen updates automatically.
+    ※ 표시된 수치는 데모용 예시 데이터입니다. 실제 POS·정산 데이터 연동 시 동일한 화면으로 갱신됩니다.
   </footer>
 </div>
 
 <script>
 (function () {
-  // ---- Sample data: Pangyo office district (strong lunch peak 11-13, dinner peak 18-20) ----
+  // ---- Sample data: 판교 오피스 상권 (강한 점심피크 11-13시, 저녁피크 18-20시) ----
   const HOURS = [10,11,12,13,14,15,16,17,18,19,20,21];
-  // [sales (KRW), orders] — today
+  // [거래액(원), 건수] — 오늘
   const TODAY = {
     10: [180000, 12], 11: [1240000, 78], 12: [2680000, 164], 13: [1520000, 96],
     14: [520000, 34], 15: [310000, 21], 16: [280000, 18], 17: [640000, 41],
     18: [1980000, 118], 19: [2240000, 132], 20: [1160000, 71], 21: [430000, 28]
   };
-  // weekday average (a bit smoother)
+  // 주중 평균 (조금 더 완만)
   const WEEK = {
     10: [210000, 14], 11: [1120000, 71], 12: [2410000, 149], 13: [1440000, 91],
     14: [560000, 37], 15: [340000, 23], 16: [300000, 20], 17: [590000, 38],
     18: [1810000, 108], 19: [2020000, 121], 20: [1080000, 67], 21: [400000, 26]
   };
-  const DOW = [ // total sales by day of week
-    ["Mon", 11800000], ["Tue", 12400000], ["Wed", 12900000],
-    ["Thu", 13600000], ["Fri", 15200000], ["Sat", 9200000], ["Sun", 6100000]
+  const DOW = [ // 요일별 총 거래액
+    ["월", 11800000], ["화", 12400000], ["수", 12900000],
+    ["목", 13600000], ["금", 15200000], ["토", 9200000], ["일", 6100000]
   ];
 
-  const full = n => n.toLocaleString("en-US");           // 2,680,000
-  const money = n => "₩" + full(n);                  // ₩2,680,000
-  const short = n => {                                    // ₩2.7M / ₩500K
-    if (n >= 1000000) return "₩" + (n/1000000).toFixed(1).replace(/\.0$/,"") + "M";
-    if (n >= 1000) return "₩" + Math.round(n/1000) + "K";
-    return "₩" + full(n);
+  const won = n => n.toLocaleString("ko-KR");
+  const wonShort = n => {
+    if (n >= 10000000) return (n/10000000).toFixed(1).replace(/\.0$/,"") + "천만";
+    if (n >= 10000) return Math.round(n/10000).toLocaleString("ko-KR") + "만";
+    return won(n);
   };
 
   let current = "today";
@@ -318,14 +324,15 @@
     const total = HOURS.reduce((s,h)=>s+data[h][0], 0);
     const count = HOURS.reduce((s,h)=>s+data[h][1], 0);
     const avg = Math.round(total / count);
+    // peak hour
     let peakH = HOURS[0];
     HOURS.forEach(h => { if (data[h][0] > data[peakH][0]) peakH = h; });
 
     const cards = [
-      { label: current==="today"?"Total sales today":"Weekday avg sales", value: short(total), unit:"", delta:"+12.4%", dir:"up", note:"vs last week" },
-      { label: "Orders", value: full(count), unit:"", delta:"+8.1%", dir:"up", note:"vs last week" },
-      { label: "Avg per order", value: money(avg), unit:"", delta:"+3.9%", dir:"up", note:"vs last week" },
-      { label: "Peak hour", value: peakH+":00", unit:"", delta:"Lunch peak", dir:"flat", note:"" },
+      { label: current==="today"?"오늘 총 거래액":"주중 일평균 거래액", value: wonShort(total), unit:"원", delta:"+12.4%", dir:"up", note:"전주 대비" },
+      { label: "거래 건수", value: won(count), unit:"건", delta:"+8.1%", dir:"up", note:"전주 대비" },
+      { label: "평균 객단가", value: won(avg), unit:"원", delta:"+3.9%", dir:"up", note:"전주 대비" },
+      { label: "최다 거래 시간", value: peakH+":00", unit:"", delta:"점심 피크", dir:"flat", note:"" },
     ];
 
     document.getElementById("kpis").innerHTML = cards.map(c => `
@@ -333,7 +340,7 @@
         <div class="label">${c.label}</div>
         <div class="value">${c.value}<span class="unit">${c.unit}</span></div>
         <div class="delta ${c.dir==="up"?"up":c.dir==="down"?"down":""}" style="${c.dir==="flat"?"color:var(--amber-deep)":""}">
-          ${c.dir==="up"?'<span class="arrow">&#9650;</span>':c.dir==="down"?'<span class="arrow">&#9660;</span>':''} ${c.delta}
+          ${c.dir==="up"?'<span class="arrow">▲</span>':c.dir==="down"?'<span class="arrow">▼</span>':''} ${c.delta}
           ${c.note?`<span style="color:var(--ink-faint);font-weight:500;margin-left:2px">${c.note}</span>`:""}
         </div>
       </div>`).join("");
@@ -343,6 +350,7 @@
   const W = 960, H = 340, PAD_L = 56, PAD_R = 16, PAD_T = 28, PAD_B = 40;
   const chart = document.getElementById("chart");
   const tooltip = document.getElementById("tooltip");
+  const chartArea = chart.parentElement;
 
   function renderChart() {
     const data = current === "today" ? TODAY : WEEK;
@@ -356,13 +364,16 @@
     const slot = plotW / n;
     const bw = slot * 0.6;
 
+    // nice y ticks
     const step = 500000, top = Math.ceil(max/step)*step;
     let s = '';
+    // grid + y labels
     for (let v = 0; v <= top; v += step) {
       const y = PAD_T + plotH - (v/top)*plotH;
       s += `<line class="grid-line" x1="${PAD_L}" y1="${y.toFixed(1)}" x2="${W-PAD_R}" y2="${y.toFixed(1)}"/>`;
-      s += `<text class="y-label" x="${PAD_L-10}" y="${(y+3.5).toFixed(1)}" text-anchor="end">${v===0?"0":short(v)}</text>`;
+      s += `<text class="y-label" x="${PAD_L-10}" y="${(y+3.5).toFixed(1)}" text-anchor="end">${v===0?"0":wonShort(v)}</text>`;
     }
+    // bars
     HOURS.forEach((h,i) => {
       const [amt, cnt] = data[h];
       const bh = (amt/top)*plotH;
@@ -374,12 +385,13 @@
              rx="5" fill="${fill}" data-hour="${h}" data-amt="${amt}" data-cnt="${cnt}"
              data-cx="${(x+bw/2).toFixed(1)}" data-cy="${y.toFixed(1)}"/>`;
       if (h === peakH) {
-        s += `<text class="peak-tag" x="${(x+bw/2).toFixed(1)}" y="${(y-8).toFixed(1)}">${short(amt)}</text>`;
+        s += `<text class="peak-tag" x="${(x+bw/2).toFixed(1)}" y="${(y-8).toFixed(1)}">${wonShort(amt)}</text>`;
       }
-      s += `<text class="x-label ${isPeak?'peak':''}" x="${(x+bw/2).toFixed(1)}" y="${H-PAD_B+18}" text-anchor="middle">${h}:00</text>`;
+      s += `<text class="x-label ${isPeak?'peak':''}" x="${(x+bw/2).toFixed(1)}" y="${H-PAD_B+18}" text-anchor="middle">${h}시</text>`;
     });
     chart.innerHTML = s;
 
+    // tooltip events
     chart.querySelectorAll(".bar").forEach(bar => {
       bar.addEventListener("mousemove", () => {
         const h = bar.dataset.hour, amt = +bar.dataset.amt, cnt = +bar.dataset.cnt;
@@ -387,10 +399,10 @@
         const rect = chart.getBoundingClientRect();
         const px = (cx / W) * rect.width;
         const py = (cy / H) * rect.height;
-        tooltip.innerHTML = `<div class="tt-hour">${h}:00 &ndash; ${(+h+1)}:00</div>
-          <div class="tt-row"><span>Sales</span><span>${money(amt)}</span></div>
-          <div class="tt-row"><span>Orders</span><span>${full(cnt)}</span></div>
-          <div class="tt-row"><span>Avg / order</span><span>${money(Math.round(amt/cnt))}</span></div>`;
+        tooltip.innerHTML = `<div class="tt-hour">${h}:00 – ${(+h+1)}:00</div>
+          <div class="tt-row"><span>거래액</span><span>${won(amt)}원</span></div>
+          <div class="tt-row"><span>건수</span><span>${won(cnt)}건</span></div>
+          <div class="tt-row"><span>객단가</span><span>${won(Math.round(amt/cnt))}원</span></div>`;
         tooltip.style.left = px + "px";
         tooltip.style.top = (py - 10) + "px";
         tooltip.style.opacity = "1";
@@ -402,7 +414,7 @@
   // ---------- DOW chart (horizontal) ----------
   function renderDOW() {
     const svg = document.getElementById("chart-dow");
-    const w = 460, padL = 40, padR = 64, padT = 8, padB = 8, h = 240;
+    const w = 460, h = 240, padL = 34, padR = 60, padT = 8, padB = 8;
     const max = Math.max(...DOW.map(d => d[1]));
     const rowH = (h - padT - padB) / DOW.length;
     const bh = rowH * 0.58;
@@ -410,18 +422,18 @@
     DOW.forEach(([day, amt], i) => {
       const y = padT + rowH*i + (rowH-bh)/2;
       const bw = (amt/max) * (w - padL - padR);
-      const weekend = day === "Sat" || day === "Sun";
+      const weekend = day === "토" || day === "일";
       s += `<text x="${padL-10}" y="${(y+bh/2+4).toFixed(1)}" text-anchor="end" font-size="12" font-weight="600" fill="${weekend?'var(--ink-faint)':'var(--ink-soft)'}">${day}</text>`;
       s += `<rect x="${padL}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${bh.toFixed(1)}" rx="5" fill="${weekend?'var(--teal)':'var(--amber)'}"/>`;
-      s += `<text x="${(padL+bw+8).toFixed(1)}" y="${(y+bh/2+4).toFixed(1)}" font-size="11.5" font-weight="600" fill="var(--ink-soft)" style="font-variant-numeric:tabular-nums">${short(amt)}</text>`;
+      s += `<text x="${(padL+bw+8).toFixed(1)}" y="${(y+bh/2+4).toFixed(1)}" font-size="11.5" font-weight="600" fill="var(--ink-soft)" style="font-variant-numeric:tabular-nums">${wonShort(amt)}</text>`;
     });
     svg.innerHTML = s;
   }
 
-  // ---------- Orders chart (area) ----------
+  // ---------- Count chart (line/area) ----------
   function renderCount() {
     const svg = document.getElementById("chart-cnt");
-    const w = 460, padL = 30, padR = 14, padT = 14, padB = 26, h = 240;
+    const w = 460, h = 240, padL = 30, padR = 14, padT = 14, padB = 26;
     const data = TODAY;
     const max = Math.max(...HOURS.map(h2 => data[h2][1]));
     const plotW = w - padL - padR, plotH = h - padT - padB;
@@ -431,6 +443,7 @@
       return [x,y,hh];
     });
     let s = '';
+    // baseline grid
     for (let g=0; g<=2; g++){
       const y = padT + (plotH/2)*g;
       s += `<line class="grid-line" x1="${padL}" y1="${y}" x2="${w-padR}" y2="${y}"/>`;
@@ -439,9 +452,9 @@
     s += `<polygon points="${area}" fill="var(--teal-wash)"/>`;
     s += `<polyline points="${pts.map(p=>`${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(" ")}" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>`;
     pts.forEach((p,i) => {
-      const showLabel = HOURS[i]%2===0;
+      const show = HOURS[i]%2===0;
       s += `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3" fill="var(--teal)"/>`;
-      if (showLabel) s += `<text x="${p[0].toFixed(1)}" y="${h-8}" text-anchor="middle" font-size="10" fill="var(--ink-faint)">${p[2]}:00</text>`;
+      if (show) s += `<text x="${p[0].toFixed(1)}" y="${h-8}" text-anchor="middle" font-size="10" fill="var(--ink-faint)">${p[2]}시</text>`;
     });
     svg.innerHTML = s;
   }
@@ -460,19 +473,22 @@
       const barW = (amt/max*100);
       const isPeak = h === peakH;
       return `<tr class="${isPeak?'is-peak':''}">
-        <td>${h}:00 &ndash; ${h+1}:00 ${isPeak?'<span class="pill">Peak</span>':''}</td>
-        <td>${money(amt)}</td>
-        <td>${full(cnt)}</td>
-        <td>${money(Math.round(amt/cnt))}</td>
+        <td>${h}:00 – ${h+1}:00 ${isPeak?'<span class="pill">피크</span>':''}</td>
+        <td>${won(amt)}원</td>
+        <td>${won(cnt)}건</td>
+        <td>${won(Math.round(amt/cnt))}원</td>
         <td>${share.toFixed(1)}%</td>
         <td style="width:120px"><span class="mini-bar" style="width:${barW.toFixed(0)}%"></span></td>
       </tr>`;
     }).join("");
-    document.getElementById("table-hint").textContent = current === "today" ? "Today" : "Weekday avg";
+    document.getElementById("table-hint").textContent = current === "today" ? "오늘 기준" : "주중 평균 기준";
   }
 
-  function renderAll() { renderKPI(); renderChart(); renderTable(); }
+  function renderAll() {
+    renderKPI(); renderChart(); renderTable();
+  }
 
+  // ---------- Toggle ----------
   const btnToday = document.getElementById("btn-today");
   const btnWeek = document.getElementById("btn-week");
   function setMode(mode) {
@@ -489,3 +505,5 @@
   renderCount();
 })();
 </script>
+</body>
+</html>
